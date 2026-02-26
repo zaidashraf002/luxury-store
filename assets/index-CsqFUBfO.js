@@ -1,8 +1,22 @@
-/* Luxury Way Store - Fixed Bundle */
-(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const r of document.querySelectorAll('link[rel="modulepreload"]'))s(r);new MutationObserver(r=>{for(const i of r)if(i.type==="childList")for(const o of i.addedNodes)o.tagName==="LINK"&&o.rel==="modulepreload"&&s(o)}).observe(document,{childList:!0,subtree:!0});function n(r){const i={};return r.integrity&&(i.integrity=r.integrity),r.referrerPolicy&&(i.referrerPolicy=r.referrerPolicy),r.crossOrigin==="use-credentials"?i.credentials="include":r.crossOrigin==="anonymous"?i.credentials="omit":i.credentials="same-origin",i}function s(r){if(r.ep)return;r.ep=!0;const i=n(r);fetch(r.href,i)}})();
+/* Luxury Store - Fixed JavaScript */
+(function(){
+    const t=document.createElement("link").relList;
+    if(t&&t.supports&&t.supports("modulepreload"))return;
+    for(const r of document.querySelectorAll('link[rel="modulepreload"]'))s(r);
+    new MutationObserver(r=>{
+        for(const i of r)if(i.type==="childList")
+        for(const o of i.addedNodes)o.tagName==="LINK"&&o.rel==="modulepreload"&&s(o)
+    }).observe(document,{childList:!0,subtree:!0});
+    function n(r){
+        const i={};
+        return r.integrity&&(i.integrity=r.integrity),r.referrerPolicy&&(i.referrerPolicy=r.referrerPolicy),
+        r.crossOrigin==="use-credentials"?i.credentials="include":r.crossOrigin==="anonymous"?i.credentials="omit":i.credentials="same-origin",i
+    }
+    function s(r){if(r.ep)return;r.ep=!0;const i=n(r);fetch(r.href,i)}
+})();
 
-// Fixed Data Array with correct paths
-const d = [
+// Products Data
+const products = [
   { id: 1, name: "Rolex Submariner", price: 12500, image: "assets/rolex.jpg", category: "Watches" },
   { id: 2, name: "Cartier Love Bracelet", price: 6800, image: "assets/cartier-bracelet.png", category: "Jewelry" },
   { id: 3, name: "Chanel Classic Flap", price: 8200, image: "assets/chanel-bag.jpg", category: "Bags" },
@@ -13,25 +27,31 @@ const d = [
   { id: 8, name: "Louboutin Pigalle", price: 795, image: "assets/louboutin.jpg", category: "Shoes" }
 ];
 
-// Display Function
-function renderStore() {
-  const grid = document.getElementById("product-grid") || document.getElementById("root");
-  if (grid) {
-    grid.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px;">
-        ${d.map(item => `
-          <div style="background: #111; border: 1px solid #333; padding: 15px; border-radius: 8px; text-align: center;">
-            <img src="${item.image}" alt="${item.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/300?text=Image+Not+Found'">
-            <h3 style="margin: 10px 0;">${item.name}</h3>
-            <p style="color: #888;">${item.category}</p>
-            <div style="font-weight: bold; color: #d4af37;">$${item.price.toLocaleString()}</div>
-            <button style="margin-top: 10px; background: #d4af37; border: none; padding: 8px 15px; cursor: pointer;">Add to Cart</button>
-          </div>
-        `).join("")}
-      </div>
+// Render Function
+function renderApp() {
+    const root = document.getElementById("root");
+    if (!root) return;
+
+    root.innerHTML = `
+        <div style="background: #000; color: #fff; min-height: 100vh; font-family: sans-serif; padding: 20px;">
+            <header style="text-align: center; padding: 40px 0; border-bottom: 1px solid #333;">
+                <h1 style="letter-spacing: 5px; text-transform: uppercase;">Luxury Store</h1>
+                <p style="color: #888;">Dubai's Finest Collection</p>
+            </header>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px 0; max-width: 1200px; margin: 0 auto;">
+                ${products.map(item => `
+                    <div style="background: #111; border: 1px solid #222; padding: 20px; text-align: center; border-radius: 4px;">
+                        <img src="${item.image}" alt="${item.name}" style="width: 100%; height: 250px; object-fit: cover; margin-bottom: 15px;" onerror="this.src='https://via.placeholder.com/300x250?text=Image+Missing'">
+                        <h3 style="margin: 10px 0; font-weight: 300;">${item.name}</h3>
+                        <p style="color: #666; font-size: 0.9em;">${item.category}</p>
+                        <div style="color: #d4af37; font-size: 1.2em; margin: 15px 0;">$${item.price.toLocaleString()}</div>
+                        <button style="background: transparent; border: 1px solid #d4af37; color: #d4af37; padding: 10px 20px; cursor: pointer; text-transform: uppercase; width: 100%;">Add To Cart</button>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
     `;
-  }
 }
 
-document.addEventListener("DOMContentLoaded", renderStore);
-window.addToCart = (id) => alert("Item added to cart!");
+document.addEventListener("DOMContentLoaded", renderApp);
+renderApp(); // Force render in case DOM already loaded
